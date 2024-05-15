@@ -1,6 +1,4 @@
 {
-  // extending tsconfig to match Matt Pocock's best practices
-  "extends": "@total-typescript/tsconfig/bundler/dom/app",
   "include": [
     "**/*.ts",
     "**/*.tsx",
