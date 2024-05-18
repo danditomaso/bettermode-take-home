@@ -20,8 +20,8 @@ export const createClient = ({
 };
 
 const client = createClient({
-  graphQLEndpoint: process.env.GRAPHQL_URL ?? "",
-  accessToken: process.env.ACCESS_TOKEN ?? "",
+  graphQLEndpoint: process?.env.GRAPHQL_URL ?? "",
+  accessToken: process?.env.ACCESS_TOKEN ?? "",
 });
 
 export { client };
