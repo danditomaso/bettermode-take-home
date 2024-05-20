@@ -1,6 +1,6 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
-import { BaseComponentProps } from "~/types";
-import { cn } from "~/utils/style";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { BaseComponentProps } from "~/types";
+import { cn } from "~/lib/style";
 
 const sizeMap = {
   small: "px-3 py-2",

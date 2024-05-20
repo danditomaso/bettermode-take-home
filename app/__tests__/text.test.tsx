@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, test } from "vitest";
 import { Text } from "~/components";
-import { cn } from "~/utils/style";
+import { cn } from "~/lib/style";
 
 describe("Text", () => {
   // Ensure the DOM is clean after each test

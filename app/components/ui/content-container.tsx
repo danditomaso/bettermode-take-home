@@ -1,6 +1,6 @@
 // import { ElementType, ReactNode } from "react";
 // import { PolymorphicProps } from "~/types";
-// import { cn } from "~/utils/style";
+// import { cn } from "~/lib/style";
 
 // type ContentContainerProps<TItem extends ElementType> =
 //   PolymorphicProps<TItem> & {

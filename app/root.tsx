@@ -6,10 +6,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
-import React from "react";
+import type React from "react";
 import { Header } from "./components";
-import { UrqlProvider } from "./utils/urql/urql";
-import { client } from "./utils/urql/client";
+import { UrqlProvider } from "~/lib/urql/urql";
+import { client } from "~/lib/urql/client";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

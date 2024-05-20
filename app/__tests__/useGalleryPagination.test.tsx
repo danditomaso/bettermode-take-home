@@ -1,9 +1,17 @@
-import React from "react";
+import type React from "react";
 import { renderHook, act } from "@testing-library/react";
 import { useGalleryPagination } from "~/hooks/";
-import { useQuery } from "~/utils/urql/client";
+import { useQuery } from "~/lib/urql/client";
 import { createClient, Provider } from "urql";
-import { Mock, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  type Mock,
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { useSearchParams } from "@remix-run/react";
 
 // Mock siteSettings
@@ -21,7 +29,7 @@ const mockClient = createClient({
   exchanges: [],
 });
 
-vi.mock("../utils/urql/client", () => ({
+vi.mock("../lib/urql/client", () => ({
   useQuery: vi.fn(),
 }));
 
@@ -99,4 +107,32 @@ describe("useGalleryPagination", () => {
 
     expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
   });
+});
+act(() => {
+  result.current.getMorePosts();
+});
+
+expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
+	});
+});
+act(() => {
+  result.current.getMorePosts();
+});
+
+expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
+	});
+});
+act(() => {
+  result.current.getMorePosts();
+});
+
+expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
+	});
+});
+act(() => {
+  result.current.getMorePosts();
+});
+
+expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
+	});
 });

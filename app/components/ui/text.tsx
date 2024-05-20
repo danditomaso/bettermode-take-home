@@ -1,6 +1,6 @@
-import { ReactNode, ElementType } from "react";
-import { ElementComponentProps } from "~/types";
-import { cn } from "~/utils/style";
+import type { ReactNode, ElementType } from "react";
+import type { ElementComponentProps } from "~/types";
+import { cn } from "~/lib/style";
 
 const variantMap = {
   h1: "font-extrabold text-4xl uppercase tracking-wide pointer-events-none",

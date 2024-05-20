@@ -1,5 +1,5 @@
 import { useSearchParams } from "@remix-run/react";
-import { useQuery } from "~/utils/urql/client";
+import { useQuery } from "~/lib/urql/client";
 import { getPostsQueryDocument } from "~/graphql/queries";
 import type {
   GetPostsQuery,

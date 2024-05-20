@@ -4,13 +4,13 @@ import {
   useAddPostReaction,
   useRemovePostReaction,
 } from "~/hooks/usePostReaction";
-import { useMutation } from "~/utils/urql/client";
+import { useMutation } from "~/lib/urql/client";
 import type {
   AddPostReactionVariables,
   RemovePostReactionVariables,
 } from "~/graphql/mutation/types";
 
-vi.mock("~/utils/urql/client", () => ({
+vi.mock("~/lib/urql/client", () => ({
   useMutation: vi.fn(),
 }));
 
