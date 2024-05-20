@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { testIDs } from "~/tests/testIDs";
 import { Text } from "../";
-import { BaseComponentProps } from "~/types";
+import type { BaseComponentProps } from "~/types";
 
 type CardProps = BaseComponentProps & {
   title: string;

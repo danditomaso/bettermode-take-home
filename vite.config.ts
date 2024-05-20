@@ -6,18 +6,5 @@ import { installGlobals } from "@remix-run/node";
 installGlobals();
 
 export default defineConfig({
-  plugins: [
-    remix({
-      routes: (defineRoutes) => {
-        return defineRoutes((route) => {
-          route("", "pages/layout.tsx", () => {
-            route("/", "pages/home.tsx", { index: true });
-            route("", "pages/gallery/home.tsx", { index: true });
-            route(":postId", "pages/gallery/details.tsx");
-          });
-        });
-      },
-    }),
-    tsconfigPaths(),
-  ],
+  plugins: [remix(), tsconfigPaths()],
 });
