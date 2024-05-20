@@ -38,7 +38,9 @@ describe("Header", () => {
       </MemoryRouter>
     );
     const activeLink = screen.getByText(siteSettings.links[0].label);
-    expect(activeLink).toHaveClass("font-bold");
+    expect(activeLink).toHaveClass(
+      "font-sans text-md tracking-wide capitalize text-gray-600 p-3 -m-3"
+    );
   });
 
   test("does not apply active class to inactive links", () => {

@@ -7,6 +7,9 @@ import {
 } from "@remix-run/react";
 import "./tailwind.css";
 import React from "react";
+import { Header } from "./components";
+import { UrqlProvider } from "./utils/urql/urql";
+import { client } from "./utils/urql/client";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -27,5 +30,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <div className="items-center flex flex-col">
+      <Header />
+      <div className="flex flex-col container place-content-center">
+        <UrqlProvider value={client}>
+          <Outlet />
+        </UrqlProvider>
+      </div>
+    </div>
+  );
 }

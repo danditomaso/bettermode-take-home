@@ -26,8 +26,6 @@ describe("Nav", () => {
     setup();
     const navElement = screen.getByRole("navigation");
     expect(navElement).toBeInTheDocument();
-    console.log(screen.getByText("Home").textContent);
-
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("About")).toBeInTheDocument();
   });

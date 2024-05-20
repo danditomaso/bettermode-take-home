@@ -1,4 +1,4 @@
-// import GetMoreCard from "./get-more-card";
+// import GetMorePosts from "./get-more-card";
 import { BaseComponentProps } from "~/types";
 import { ReactNode } from "react";
 import { testIDs } from "~/tests/testIDs";
@@ -6,9 +6,10 @@ import { testIDs } from "~/tests/testIDs";
 type GalleryProps<TItem> = BaseComponentProps & {
   // eslint-disable-next-line no-unused-vars
   renderCard: (post: TItem) => ReactNode;
+  getMorePosts: ReactNode;
   posts: TItem[];
 };
-function Gallery<TItem extends { id: string }>(props: GalleryProps<TItem>) {
+function GalleryList<TItem extends { id: string }>(props: GalleryProps<TItem>) {
   const { posts, renderCard } = props;
 
   if (posts?.length === 0) {
@@ -23,9 +24,9 @@ function Gallery<TItem extends { id: string }>(props: GalleryProps<TItem>) {
       {posts?.map((post) => (
         <li key={post?.id}>{renderCard(post)}</li>
       ))}
-      {/* <GetMoreCard /> */}
+      {props?.getMorePosts}
     </ul>
   );
 }
 
-export default Gallery;
+export default GalleryList;

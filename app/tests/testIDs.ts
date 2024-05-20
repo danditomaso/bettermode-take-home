@@ -9,4 +9,8 @@ export const testIDs = {
     likeButton: "gallery-card-like-button",
     gotoPostButton: "gallery-card-goto-post-button",
   },
+  userInfo: {
+    name: "user-info-name",
+    memberSince: "user-info-member-since",
+  },
 };
