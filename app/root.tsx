@@ -7,7 +7,7 @@ import {
 } from "@remix-run/react";
 import "./tailwind.css";
 import type React from "react";
-import { Header } from "./components";
+import { GeneralErrorBoundary, Header } from "./components";
 import { UrqlProvider } from "~/lib/urql/urql";
 import { client } from "~/lib/urql/client";
 
@@ -33,11 +33,18 @@ export default function App() {
   return (
     <div className="items-center flex flex-col">
       <Header />
-      <div className="flex flex-col container place-content-center">
+      <div className="flex flex-col container place-content-center mb-12">
         <UrqlProvider value={client}>
           <Outlet />
         </UrqlProvider>
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  // this ensures we capture errors in the entire app, in case we forget to wrap a component in an error boundary
+  return (
+    <GeneralErrorBoundary />
+  )
 }

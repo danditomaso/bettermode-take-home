@@ -1,7 +1,8 @@
-import { type MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
 import Card from "~/components/gallery/gallery-card";
 import {
   GalleryList,
+  GeneralErrorBoundary,
   GetMorePosts,
   LikeButton,
   LinkButton,
@@ -14,10 +15,13 @@ export const meta: MetaFunction = () => {
 };
 
 export default function GalleryHome() {
-  const { data, getMorePosts, hasMorePosts } = useGalleryPagination();
+  const { data, error, getMorePosts, hasMorePosts } = useGalleryPagination();
+
+  if (!data?.posts?.nodes) throw new Error("No posts found");
+  if (error?.message) throw new Error(error.message)
 
   return (
-    <div className="flex flex-col gap-6 mt-12">
+    <div className="flex flex-col gap-6 mt-6">
       <Text variant="h2">All Blog Posts</Text>
       <Text variant="p" className="text-balance w-full max-w-[80ch] block">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, id
@@ -56,4 +60,8 @@ export default function GalleryHome() {
       />
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <GeneralErrorBoundary />
 }

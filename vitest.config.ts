@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
-    coverage: { include: ["app/**"] },
+    coverage: { include: ["app/**"], provider: 'istanbul' },
     setupFiles: ["./app/tests/setupTest.ts"],
     environment: "happy-dom",
   },

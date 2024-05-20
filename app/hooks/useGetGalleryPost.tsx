@@ -12,7 +12,7 @@ function useGetGalleryPost(id: string) {
 
   if (error) console.error(error);
 
-  return { data };
+  return { data, error };
 }
 
 export default useGetGalleryPost;

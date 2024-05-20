@@ -22,7 +22,7 @@ function UserInfo({ name, publishedAt }: UserInfoProps) {
       <Text
         variant={"p"}
         className="capitalize text-xl font-light"
-        data-testid={testIDs?.userInfo?.name ?? ""}
+        data-testid={testIDs?.userInfo?.date ?? ""}
       >
         {formatedDate}
       </Text>

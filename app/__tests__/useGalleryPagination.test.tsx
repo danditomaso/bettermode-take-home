@@ -1,138 +1,100 @@
-import type React from "react";
 import { renderHook, act } from "@testing-library/react";
-import { useGalleryPagination } from "~/hooks/";
-import { useQuery } from "~/lib/urql/client";
-import { createClient, Provider } from "urql";
-import {
-  type Mock,
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { describe, expect, it, vi, afterEach } from "vitest";
 import { useSearchParams } from "@remix-run/react";
+import useGalleryPagination from "~/hooks/useGalleryPagination";
+import { useQuery } from "~/lib/urql/client";
+import { siteSettings } from "~/config/siteSettings";
+import { GetPostsQuery, GetPostsQueryVariables } from "~/graphql/queries/types";
 
-// Mock siteSettings
-vi.mock("~/config/siteSettings", () => ({
-  siteSettings: {
-    limits: {
-      galleryPageLimit: 10,
-    },
-  },
-}));
-
-// Mock urql client
-const mockClient = createClient({
-  url: "http://mock-api.com/graphql",
-  exchanges: [],
-});
-
-vi.mock("../lib/urql/client", () => ({
+// Mock the useQuery hook from ~/lib/urql/client
+vi.mock("~/lib/urql/client", () => ({
   useQuery: vi.fn(),
 }));
 
-// Mock useSearchParams
+// Mock the useSearchParams hook from @remix-run/react
 vi.mock("@remix-run/react", () => ({
   useSearchParams: vi.fn(),
 }));
 
-type ProviderProps = {
-  children: React.ReactNode;
-};
-
 describe("useGalleryPagination", () => {
   const mockData = {
     posts: {
-      totalCount: 50,
+      totalCount: 100,
+      edges: [
+        { id: "1", title: "Post 1" },
+        { id: "2", title: "Post 2" },
+      ],
     },
   };
+  const mockInitialLimit = siteSettings.limits.galleryPageLimit;
+  const mockError = new Error("Test Error");
+  const setSearchParams = vi.fn();
 
-  beforeEach(() => {
-    // Mocking the return value of useQuery
-    const mockUseQuery = useQuery as Mock;
-    mockUseQuery.mockReturnValue([{ data: mockData }]);
-
-    // Mocking useSearchParams
-    const mockUseSearchParams = useSearchParams as Mock;
-    mockUseSearchParams.mockReturnValue([
-      new URLSearchParams("?limit=10"),
-      vi.fn(),
+  const setup = ({ data = mockData, error = { name: "", message: "", graphQLErrors: [] }, fetching = false, stale = false } = {}) => {
+    vi.mocked(useQuery).mockReturnValue([{ data, error, fetching, stale }]);
+    vi.mocked(useSearchParams).mockReturnValue([
+      new URLSearchParams(`limit=${mockInitialLimit}`),
+      setSearchParams,
     ]);
-  });
+  };
 
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should initialize with default limit", () => {
-    const { result } = renderHook(() => useGalleryPagination(), {
-      wrapper: ({ children }: ProviderProps) => (
-        <Provider value={mockClient}>{children}</Provider>
-      ),
-    });
+  it("should return data and pagination information when the query is successful", () => {
+    setup();
 
-    expect(result.current.currentLimit).toBe(10);
-  });
-
-  it("should return data and hasMorePosts correctly", () => {
-    const { result } = renderHook(() => useGalleryPagination(), {
-      wrapper: ({ children }: ProviderProps) => (
-        <Provider value={mockClient}>{children}</Provider>
-      ),
-    });
+    const { result } = renderHook(() => useGalleryPagination(mockInitialLimit));
 
     expect(result.current.data).toEqual(mockData);
+    expect(result.current.currentLimit).toBe(mockInitialLimit);
     expect(result.current.hasMorePosts).toBe(true);
   });
 
-  it("should update search params when getMorePosts is called", () => {
-    const mockSetSearchParams = vi.fn();
-    const mockUseSearchParams = useSearchParams as Mock;
-    mockUseSearchParams.mockReturnValue([
-      new URLSearchParams("?limit=10"),
-      mockSetSearchParams,
-    ]);
+  it("should update search parameters correctly when getMorePosts is called", () => {
+    setup();
 
-    const { result } = renderHook(() => useGalleryPagination(), {
-      wrapper: ({ children }: ProviderProps) => (
-        <Provider value={mockClient}>{children}</Provider>
-      ),
-    });
+    const { result } = renderHook(() => useGalleryPagination(mockInitialLimit));
 
     act(() => {
       result.current.getMorePosts();
     });
 
-    expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
+    const expectedNewLimit = Math.min(mockInitialLimit + mockInitialLimit + 1, mockData.posts.totalCount);
+    expect(setSearchParams).toHaveBeenCalledWith({ limit: expectedNewLimit.toString() });
   });
-});
-act(() => {
-  result.current.getMorePosts();
-});
 
-expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
-	});
-});
-act(() => {
-  result.current.getMorePosts();
-});
+  it("should handle error scenario", () => {
+    // Mock console.error
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => { });
 
-expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
-	});
-});
-act(() => {
-  result.current.getMorePosts();
-});
+    setup({ error: mockError });
 
-expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
-	});
-});
-act(() => {
-  result.current.getMorePosts();
-});
+    renderHook(() => useGalleryPagination(mockInitialLimit));
 
-expect(mockSetSearchParams).toHaveBeenCalledWith({ limit: "21" });
-	});
+    expect(consoleErrorSpy).toHaveBeenCalledWith(mockError);
+
+    // Restore console.error
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("should return undefined data when the query has no result", () => {
+    setup({ data: null });
+
+    const { result } = renderHook(() => useGalleryPagination(mockInitialLimit));
+
+    expect(result.current.data).toBeUndefined();
+    expect(result.current.currentLimit).toBe(mockInitialLimit);
+    expect(result.current.hasMorePosts).toBe(false);
+  });
+
+  it("should indicate fetching state correctly", () => {
+    setup({ fetching: true });
+
+    const { result } = renderHook(() => useGalleryPagination(mockInitialLimit));
+
+    expect(result.current.data).toBeUndefined();
+    expect(result.current.hasMorePosts).toBe(false);
+  });
 });

@@ -1,10 +1,10 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { LikeButton, Text, UserInfo } from "~/components";
+import { GeneralErrorBoundary, LikeButton, Text, UserInfo } from "~/components";
 import { useGetGalleryPost } from "~/hooks";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Bettermode Take Home" }];
+  return [{ title: "Bettermode Take Home - Post Detail" }];
 };
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -17,11 +17,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { postId };
 }
 
-function GalleryDetailsPage() {
+export default function GalleryDetailsPage() {
   const { postId } = useLoaderData<typeof loader>();
-  const { data } = useGetGalleryPost(postId);
+  if (!postId) throw new Error("Post not found");
 
-  const postReaction = data?.post.reactions.at(0)
+  const { data, error } = useGetGalleryPost(postId);
+
+  if (!data) throw new Error("Post not found");
+  if (error?.message) throw new Error(error.message);
+
+  const postReaction = data?.post?.reactions?.at(0)
   const isLiked = postReaction?.reacted;
   const postReactionCount = postReaction?.count;
 
@@ -46,4 +51,6 @@ function GalleryDetailsPage() {
   );
 }
 
-export default GalleryDetailsPage;
+export function ErrorBoundary() {
+  return <GeneralErrorBoundary />
+}

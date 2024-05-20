@@ -11,6 +11,7 @@ export const testIDs = {
   },
   userInfo: {
     name: "user-info-name",
+    date: "user-info-date",
     memberSince: "user-info-member-since",
   },
 };

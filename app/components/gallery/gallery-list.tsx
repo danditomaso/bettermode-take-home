@@ -1,6 +1,5 @@
-// import GetMorePosts from "./get-more-card";
-import { BaseComponentProps } from "~/types";
-import { ReactNode } from "react";
+import type { BaseComponentProps } from "~/types";
+import type { ReactNode } from "react";
 import { testIDs } from "~/tests/testIDs";
 
 type GalleryProps<TItem> = BaseComponentProps & {
@@ -18,7 +17,7 @@ function GalleryList<TItem extends { id: string }>(props: GalleryProps<TItem>) {
 
   return (
     <ul
-      className="grid grid-cols-2 md:grid-cols-3 gap-4"
+      className="grid gap-3 lg:grid-cols-3  md:grid-cols-2 sm:grid-cols-1 "
       data-testid={testIDs.gallery.postContainer}
     >
       {posts?.map((post) => (
