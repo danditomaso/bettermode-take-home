@@ -1,11 +1,11 @@
 import { testIDs } from "~/tests/testIDs";
 import { Button, Text } from "./";
 import type { ElementComponentProps } from "~/types";
-import { cn } from "~/utils/style";
+import { cn } from "~/lib/style";
 import {
 	useAddPostReaction,
 	useRemovePostReaction,
-} from "~/hooks/usePostReaction";
+} from "~/hooks/";
 
 type LikeButtonProps = ElementComponentProps<"button"> & {
 	id: string;
@@ -23,21 +23,21 @@ function LikeButton({
 	const { addReaction } = useAddPostReaction();
 	const { removeReaction } = useRemovePostReaction();
 
-  // if isLiked is true, remove the reaction, else add the reaction
+	// if isLiked is true, remove the reaction, else add the reaction
 	function handleReaction(isLiked: boolean) {
 		return isLiked
 			? removeReaction({
-					postId: id,
-					reaction: "upvote",
-					participantId: "gpwNvm70TU",
-				})
+				postId: id,
+				reaction: "upvote",
+				participantId: "gpwNvm70TU",
+			})
 			: addReaction({
-					input: {
-						participantId: "gpwNvm70TU",
-						reaction: "upvote",
-					},
-					postId: id,
-				});
+				input: {
+					participantId: "gpwNvm70TU",
+					reaction: "upvote",
+				},
+				postId: id,
+			});
 	}
 
 	return (

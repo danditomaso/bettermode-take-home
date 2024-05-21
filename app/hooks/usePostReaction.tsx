@@ -1,9 +1,9 @@
-import { useMutation } from "~/utils/urql/client";
+import { useMutation } from "~/lib/urql/client";
 import {
   addPostReactionMutation,
   removePostReactionMutation,
 } from "~/graphql/mutation";
-import {
+import type {
   AddPostReactionMutationResponse,
   AddPostReactionVariables,
   RemovePostReactionMutationResponse,

@@ -1,6 +1,6 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
-import { BaseComponentProps } from "~/types";
-import { cn } from "~/utils/style";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { BaseComponentProps } from "~/types";
+import { cn } from "~/lib/style";
 
 const sizeMap = {
   small: "px-3 py-2",
@@ -25,7 +25,7 @@ function Button({
   ...props
 }: ButtonProps) {
   const baseBtnStyle =
-    "text-center rounded-lg focus:outline-none focus:ring-2 flex gap-2 text-black bg-white hover:text-white hover:bg-[#000] border border-black focus:ring-black rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2";
+    "text-center rounded-lg focus:outline-none focus:ring-2 flex gap-2 text-black bg-white hover:text-white hover:bg-[#000] border border-black focus:ring-black rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 transition-colors";
 
   return (
     <>

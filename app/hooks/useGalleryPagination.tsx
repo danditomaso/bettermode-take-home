@@ -1,5 +1,5 @@
 import { useSearchParams } from "@remix-run/react";
-import { useQuery } from "~/utils/urql/client";
+import { useQuery } from "~/lib/urql/client";
 import { getPostsQueryDocument } from "~/graphql/queries";
 import type {
   GetPostsQuery,
@@ -19,11 +19,11 @@ function useGalleryPagination(
   );
 
   // this function could also be passed in as a parameter to the hook
-  const [{ data }] = useQuery<GetPostsQuery, GetPostsQueryVariables>({
+  const [{ data, error }] = useQuery<GetPostsQuery, GetPostsQueryVariables>({
     query: getPostsQueryDocument,
     variables: {
       limit: currentLimit,
-      spaceIds: ["JTkErbfwxYwt"],
+      spaceIds: [import.meta.env.VITE_SPACE_ID ?? ""],
     },
   });
 
@@ -41,7 +41,7 @@ function useGalleryPagination(
     });
   }, [currentLimit, initialLimit, setSearchParams, totalPosts]);
 
-  return { data, getMorePosts, currentLimit, hasMorePosts };
+  return { data, error, getMorePosts, currentLimit, hasMorePosts };
 }
 
 export default useGalleryPagination;

@@ -5,6 +5,11 @@ import { installGlobals } from "@remix-run/node";
 
 installGlobals();
 
-export default defineConfig({
-  plugins: [remix(), tsconfigPaths()],
+export default defineConfig(() => {
+  return {
+    build: {
+      sourcemap: false,
+    },
+    plugins: [remix(), tsconfigPaths()],
+  }
 });

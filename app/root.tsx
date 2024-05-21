@@ -6,10 +6,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
-import React from "react";
-import { Header } from "./components";
-import { UrqlProvider } from "./utils/urql/urql";
-import { client } from "./utils/urql/client";
+import type React from "react";
+import { GeneralErrorBoundary, Header } from "./components";
+import { UrqlProvider } from "~/lib/urql/urql";
+import { client } from "~/lib/urql/client";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +18,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
+
         <Links />
       </head>
       <body className="h-full">
@@ -33,11 +34,18 @@ export default function App() {
   return (
     <div className="items-center flex flex-col">
       <Header />
-      <div className="flex flex-col container place-content-center">
+      <div className="flex flex-col container place-content-center mb-12">
         <UrqlProvider value={client}>
           <Outlet />
         </UrqlProvider>
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  // this ensures we capture errors in the entire app, in case we forget to wrap a component in an error boundary
+  return (
+    <GeneralErrorBoundary />
+  )
 }

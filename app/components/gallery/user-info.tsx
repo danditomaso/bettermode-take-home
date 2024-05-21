@@ -1,7 +1,7 @@
 import { testIDs } from "~/tests/testIDs";
 import { Text } from "~/components";
-import { BaseComponentProps } from "~/types";
-import { formatDate } from "~/utils/dates/date";
+import type { BaseComponentProps } from "~/types";
+import { formatDate } from "~/lib/dates/date";
 
 type UserInfoProps = BaseComponentProps & {
   name: string;
@@ -22,7 +22,7 @@ function UserInfo({ name, publishedAt }: UserInfoProps) {
       <Text
         variant={"p"}
         className="capitalize text-xl font-light"
-        data-testid={testIDs?.userInfo?.name ?? ""}
+        data-testid={testIDs?.userInfo?.date ?? ""}
       >
         {formatedDate}
       </Text>

@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { BaseComponentProps } from "~/types";
-import { cn } from "~/utils/style";
+import type { ReactNode } from "react";
+import type { BaseComponentProps } from "~/types";
+import { cn } from "~/lib/style";
 
 type NavProps<TItem> = BaseComponentProps & {
   links: TItem[];
