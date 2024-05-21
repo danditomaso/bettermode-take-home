@@ -19,7 +19,7 @@ function useGalleryPagination(
   );
 
   // this function could also be passed in as a parameter to the hook
-  const [{ data, error }] = useQuery<GetPostsQuery, GetPostsQueryVariables>({
+  const [{ data, error, fetching }] = useQuery<GetPostsQuery, GetPostsQueryVariables>({
     query: getPostsQueryDocument,
     variables: {
       limit: currentLimit,
@@ -41,7 +41,7 @@ function useGalleryPagination(
     });
   }, [currentLimit, initialLimit, setSearchParams, totalPosts]);
 
-  return { data, error, getMorePosts, currentLimit, hasMorePosts };
+  return { data, error, getMorePosts, currentLimit, hasMorePosts, fetching };
 }
 
 export default useGalleryPagination;
