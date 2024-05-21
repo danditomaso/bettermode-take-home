@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { GeneralErrorBoundary, LikeButton, Text, UserInfo } from "~/components";
+import { LikeButton, Text, UserInfo } from "~/components";
 import { ArrowIcon } from "~/components/icons";
 import { useGetGalleryPost, useNavigateBack } from "~/hooks";
 
@@ -10,26 +10,22 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { postId } = params;
-
   if (!postId) {
     throw new Error("Post not found");
   }
-
   return { postId };
 }
 
 export default function GalleryDetailsPage() {
   const { navigateBack } = useNavigateBack();
-  const { postId } = useLoaderData<typeof loader>();
-  if (!postId) throw new Error("Post not found");
-
+  const { postId } = useLoaderData<typeof loader>()
   const { data, error } = useGetGalleryPost(postId);
 
   if (error?.message) throw new Error(error.message);
 
   const postReaction = data?.post?.reactions?.at(0)
-  const isLiked = postReaction?.reacted;
-  const postReactionCount = postReaction?.count;
+  const isLiked = postReaction?.reacted ?? false;
+  const postReactionCount = postReaction?.count ?? 0;
 
   return (
     <article className="flex flex-col gap-8 my-14 h-full">
@@ -47,7 +43,7 @@ export default function GalleryDetailsPage() {
       <div>
         <LikeButton
           reactionsCount={postReactionCount ?? 0}
-          id={data?.post.id ?? ""}
+          id={data?.post?.id ?? ""}
           isLiked={isLiked ?? false}
         />
       </div>
@@ -58,6 +54,4 @@ export default function GalleryDetailsPage() {
   );
 }
 
-export function ErrorBoundary() {
-  return <GeneralErrorBoundary />
-}
+

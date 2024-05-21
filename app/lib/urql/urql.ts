@@ -38,6 +38,7 @@ function createCustomClient({
     ),
     fetchOptions: () => ({
       headers: apiToken ? { authorization: `Bearer ${apiToken}` } : undefined,
+      mode: 'cors',
       credentials: includeCredentials ? "include" : undefined,
     }),
   });

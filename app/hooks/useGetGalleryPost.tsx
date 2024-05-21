@@ -8,6 +8,7 @@ function useGetGalleryPost(id: string) {
     variables: {
       id,
     },
+    pause: !id,
   });
 
   if (error) console.error(error);

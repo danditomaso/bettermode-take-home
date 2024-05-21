@@ -7,6 +7,7 @@ import {
 	useRemovePostReaction,
 } from "~/hooks/";
 import React from "react";
+import useIsomorphicLayoutEffect from "~/hooks/useIsomorphic";
 
 type LikeButtonProps = ElementComponentProps<"button"> & {
 	id: string;
@@ -14,10 +15,10 @@ type LikeButtonProps = ElementComponentProps<"button"> & {
 	isLiked: boolean;
 };
 
-// type LocalReactionState = {
-// 	count: number;
-// 	reacted: boolean;
-// };
+type LocalReactionState = {
+	count: number;
+	reacted: boolean;
+};
 
 const LikeButton = React.memo(function LikeButton({
 	reactionsCount,
@@ -26,30 +27,35 @@ const LikeButton = React.memo(function LikeButton({
 	className,
 	...props
 }: LikeButtonProps) {
-	// This is temporary and a workaround to address not being able to otimistically update the cache
-	// const [reaction, setReaction] = React.useState<LocalReactionState>({ count: 0, reacted: false });
 
+	// This is temporary and a workaround to address not being able to otimistically update the cache
+	const [reaction, setReaction] = React.useState<LocalReactionState>({ count: reactionsCount, reacted: isLiked });
+
+	// eslint-disable-next-line no-undef
 	const { addReaction } = useAddPostReaction();
 	const { removeReaction } = useRemovePostReaction();
 
 	// This is temporary, we need to update the reaction count and reaction state when the props change. 
 	// This is specifically to address the issue on the gallery detail page, where the reaction count and state aren't passed to the component on the first render
 	// This is a workaround, optimistic updating of urql cache would allow us to remove effect
-	// React.useEffect(() => {
-	// 	setReaction({
-	// 		count: reactionsCount,
-	// 		reacted: isLiked,
-	// 	});
-	// }, [reactionsCount, isLiked])
+	useIsomorphicLayoutEffect(() => {
+		// sometimes the id is not passed, so we need to check if it exists
+		if (!id) return;
+
+		setReaction({
+			count: reactionsCount,
+			reacted: isLiked,
+		});
+	}, [reactionsCount, isLiked])
 
 	// if isLiked is true, remove the reaction, else add the reaction
 	const handleReaction = React.useCallback((hasUserLiked: boolean) => {
-		// setReaction({
-		// 	count: hasUserLiked ? reaction.count + 1 : reaction.count - 1,
-		// 	reacted: !reaction.reacted,
-		// });
+		setReaction({
+			count: hasUserLiked ? reaction.count + 1 : reaction.count - 1,
+			reacted: hasUserLiked,
+		});
 
-		return hasUserLiked
+		return reaction.reacted === false
 			? addReaction({
 				input: {
 					participantId: import.meta.env.VITE_PARTICIPANT_ID,
@@ -62,7 +68,7 @@ const LikeButton = React.memo(function LikeButton({
 				participantId: import.meta.env.VITE_PARTICIPANT_ID,
 			})
 			;
-	}, [addReaction, removeReaction, id])
+	}, [reaction.count, reaction.reacted, addReaction, id, removeReaction])
 
 
 	return (
@@ -71,20 +77,21 @@ const LikeButton = React.memo(function LikeButton({
 			type={"button"}
 			size={"base"}
 			className={cn(className, "flex items-center space-x-1")}
-			onClick={() => handleReaction(!isLiked)}
+			onClick={() => handleReaction(!reaction.reacted)}
 			data-testid={testIDs.galleryCard.likeButton}
 		>
 			<Text
 				variant="p"
 				className="text-xl text-inherit"
 			>
-				{isLiked ? "♥" : "♡"}
+				{reaction.reacted ? "♥" : "♡"}
 			</Text>
 			<Text variant="p" className="font-bold text-inherit">
-				{reactionsCount?.toString()}
+				{reaction.count?.toString()}
 			</Text>
 		</Button>
 	);
-}, (prevProps, nextProps) => prevProps.isLiked === nextProps.isLiked && prevProps.reactionsCount === nextProps.reactionsCount);
+}
+	, (prevProps, nextProps) => prevProps.isLiked === nextProps.isLiked && prevProps.reactionsCount === nextProps.reactionsCount && prevProps.id !== nextProps.id);
 
 export default LikeButton;
