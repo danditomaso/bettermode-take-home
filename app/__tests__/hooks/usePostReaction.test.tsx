@@ -30,7 +30,6 @@ describe("useAddPostReaction", () => {
 
     const variables: AddPostReactionVariables = {
       input: {
-        participantId: "gpwNvm70TU",
         reaction: "upvote",
       },
       postId: "test-post",
@@ -61,7 +60,6 @@ describe("useRemovePostReaction", () => {
     const variables: RemovePostReactionVariables = {
       postId: "test-post",
       reaction: "upvote",
-      participantId: "gpwNvm70TU",
     };
 
     act(() => {

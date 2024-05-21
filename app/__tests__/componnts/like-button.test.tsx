@@ -68,7 +68,6 @@ describe("LikeButton", () => {
 
 		expect(mockAddReaction).toHaveBeenCalledWith({
 			input: {
-				participantId: "gpwNvm70TU",
 				reaction: "upvote",
 			},
 			postId: "test-post",
@@ -83,7 +82,6 @@ describe("LikeButton", () => {
 		expect(mockRemoveReaction).toHaveBeenCalledWith({
 			postId: "test-post",
 			reaction: "upvote",
-			participantId: "gpwNvm70TU",
 		});
 	});
 });

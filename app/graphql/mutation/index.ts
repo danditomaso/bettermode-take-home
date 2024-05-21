@@ -12,12 +12,10 @@ export const addPostReactionMutation = gql`
 export const removePostReactionMutation = gql`
   mutation removePostReaction(
     $postId: ID!
-    $participantId: String!
     $reaction: String!
   ) {
     removeReaction(
       postId: $postId
-      participantId: $participantId
       reaction: $reaction
     ) {
       status

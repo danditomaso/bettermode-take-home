@@ -58,14 +58,12 @@ const LikeButton = React.memo(function LikeButton({
 		return reaction.reacted === false
 			? addReaction({
 				input: {
-					participantId: import.meta.env.VITE_PARTICIPANT_ID,
 					reaction: "upvote",
 				},
 				postId: id,
 			}) : removeReaction({
 				postId: id,
 				reaction: "upvote",
-				participantId: import.meta.env.VITE_PARTICIPANT_ID,
 			})
 			;
 	}, [reaction.count, reaction.reacted, addReaction, id, removeReaction])
