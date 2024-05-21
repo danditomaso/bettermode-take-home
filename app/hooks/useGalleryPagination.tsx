@@ -23,7 +23,7 @@ function useGalleryPagination(
     query: getPostsQueryDocument,
     variables: {
       limit: currentLimit,
-      spaceIds: ["JTkErbfwxYwt"],
+      spaceIds: [import.meta.env.VITE_SPACE_ID ?? ""],
     },
   });
 

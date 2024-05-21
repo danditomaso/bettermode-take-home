@@ -14,11 +14,11 @@ export const meta: MetaFunction = () => {
 
 export default function Home() {
   const { data, error } = useGalleryPagination(siteSettings.limits.homePageLimit);
-  if (!data?.posts?.nodes) throw new Error("No posts found");
+  if (data?.posts?.nodes?.length === 0) throw new Error("No posts found");
   if (error?.message) throw new Error(error.message);
 
   return (
-    <div className="flex flex-col gap-6 mt-6">
+    <div className="flex flex-col gap-6 mt-16">
       <Text variant="h2">Latest Blog Posts</Text>
       <Text variant="p" className="text-balance w-full max-w-[80ch] block">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, id

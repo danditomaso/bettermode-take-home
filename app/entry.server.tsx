@@ -6,13 +6,17 @@
 
 import { PassThrough } from "node:stream";
 
-import type { EntryContext } from "@remix-run/node";
+import type { ActionFunctionArgs, EntryContext, LoaderFunctionArgs } from "@remix-run/node";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import { initEnvs } from '~/lib/env/env'
+import chalk from 'chalk'
 
 const ABORT_DELAY = 5_000;
+// run a validation check on the environment variables are present
+initEnvs()
 
 export default function handleRequest(
   request: Request,
@@ -133,4 +137,18 @@ function handleBrowserRequest(
 
     setTimeout(abort, ABORT_DELAY);
   });
+}
+
+export function handleError(
+  error: unknown,
+  { request }: LoaderFunctionArgs | ActionFunctionArgs,
+): void {
+  if (request.signal.aborted) {
+    return
+  }
+  if (error instanceof Error) {
+    console.error(chalk.red(error.stack))
+  } else {
+    console.error(chalk.red(error))
+  }
 }

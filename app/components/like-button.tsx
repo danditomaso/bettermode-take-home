@@ -5,7 +5,7 @@ import { cn } from "~/lib/style";
 import {
 	useAddPostReaction,
 	useRemovePostReaction,
-} from "~/hooks/usePostReaction";
+} from "~/hooks/";
 
 type LikeButtonProps = ElementComponentProps<"button"> & {
 	id: string;
