@@ -2,7 +2,7 @@ import { renderHook, act, cleanup } from "@testing-library/react";
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { useSearchParams } from "@remix-run/react";
 import useGalleryPagination from "~/hooks/useGalleryPagination";
-import { useQuery } from "~/lib/urql/client";
+import { useQuery } from "~/graphql/client/gqlClient";
 import { siteSettings } from "~/config/siteSettings";
 import { CombinedError } from "urql";
 import type { GetPostsQuery } from "~/graphql/queries/types";

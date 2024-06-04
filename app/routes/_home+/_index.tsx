@@ -1,21 +1,19 @@
 import type { MetaFunction } from "@remix-run/node";
-import Card from "~/components/gallery/gallery-card";
-import { GalleryList, GeneralErrorBoundary, LikeButton, LinkButton, Text } from "~/components";
-import { useGalleryPagination } from "~/hooks";
-import { siteSettings } from "~/config/siteSettings";
-import { Link } from "@remix-run/react";
-import { ArrowIcon } from "~/components/icons";
+import { GeneralErrorBoundary, Text } from "~/components";
+import { siteConfig } from "~/utils/constants/brand";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Bettermode Take Home" },
+    { title: siteConfig.siteTitle },
   ];
 };
 
+export async function loader() { }
+
 export default function Home() {
-  const { data, error } = useGalleryPagination(siteSettings.limits.homePageLimit);
-  if (data?.posts?.nodes?.length === 0) throw new Error("No posts found");
-  if (error?.message) throw new Error(error.message);
+  // const { data, error } = useLoaderData<typeof loader>();
+  // if (data?.posts?.nodes?.length === 0) throw new Error("No posts found");
+  // if (error?.message) throw new Error(error.message);
 
   return (
     <div className="flex flex-col gap-6 mt-16">
@@ -24,7 +22,7 @@ export default function Home() {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, id
         libero. animi natus sapiente dicta corporis enim aperiam maxime!
       </Text>
-      <GalleryList
+      {/* <GalleryList
         posts={data?.posts.nodes ?? []}
         getMorePosts={null}
         renderCard={(card) => {
@@ -57,7 +55,7 @@ export default function Home() {
           All Posts
         </Text>
         <ArrowIcon className={"size-8"} />
-      </Link >
+      </Link > */}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import "./tailwind.css";
 import type React from "react";
 import { GeneralErrorBoundary, Header } from "./components";
 import { UrqlProvider } from "~/lib/urql/urql";
-import { client } from "~/lib/urql/client";
+import { client } from "~/graphql/client/gqlClient";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
