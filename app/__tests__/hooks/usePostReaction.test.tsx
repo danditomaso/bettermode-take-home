@@ -4,7 +4,7 @@ import {
   useAddPostReaction,
   useRemovePostReaction,
 } from "~/hooks/usePostReaction";
-import { useMutation } from "~/lib/urql/client";
+import { useMutation } from "~/graphql/client/gqlClient";
 import type {
   AddPostReactionVariables,
   RemovePostReactionVariables,

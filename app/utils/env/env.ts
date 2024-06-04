@@ -1,8 +1,7 @@
 import { z } from 'zod'
 
 const schema = z.object({
-  VITE_ACCESS_TOKEN: z.string(),
-  VITE_SPACE_ID: z.string(),
+  VITE_API_ENDPOINT: z.string(),
 })
 
 

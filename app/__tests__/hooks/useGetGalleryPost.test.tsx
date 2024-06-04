@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import useGetGalleryPost from "~/hooks/useGetGalleryPost";
-import { useQuery } from "~/lib/urql/client";
+import { useQuery } from "~/graphql/client/gqlClient";
 
 // Mock the useQuery hook from ~/lib/urql/client
 vi.mock("~/lib/urql/client", () => ({
